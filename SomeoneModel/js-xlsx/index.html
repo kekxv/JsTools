@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js-xlsx Demo</title>
+
+    <!-- add the shim first -->
+    <script src="Javascript/shim.min.js"></script>
+    <!-- after the shim is referenced, add the library -->
+    <script src="Javascript/xlsx.full.min.js"></script>
+</head>
+<body>
+<a onclick="downloadExl(jsono)" class="btn btn-primary" style="margin-left:20px;">
+    <span class="active glyphicon glyphicon-share">模板下载</span>
+</a>
+
+<script>
+    //模板下载
+    function saveAs(obj, fileName) {
+        var tmpa = document.createElement("a");
+        tmpa.download = fileName || "下载";
+        tmpa.href = URL.createObjectURL(obj);
+        tmpa.click();
+        setTimeout(function () {
+            URL.revokeObjectURL(obj);
+        }, 100);
+    }
+
+    var jsono = [
+        {
+            "VIN": "LDC973447G25*******"
+        }, {
+            "VIN": "LDC973447G25*******"
+        }
+    ];
+    const wopts = {
+        bookType: 'biff2',
+        bookSST: false,
+        type: 'binary'
+    };
+
+    function downloadExl(data, type) {
+        const wb = {
+            SheetNames: ['Sheet1'],
+            Sheets: {},
+            Props: {}
+        };
+        wb.Sheets['Sheet1'] = XLSX.utils.json_to_sheet(data); //通过json_to_sheet转成单页(Sheet)数据
+        saveAs(new Blob([s2ab(XLSX.write(wb, wopts))], {
+            type: "application/octet-stream"
+        }), "excel表名称" + '.' + (wopts.bookType === "biff2" ? "xls" : wopts.bookType));
+    }
+
+    function s2ab(s) {
+        let i;
+        let buf;
+        if (typeof ArrayBuffer !== 'undefined') {
+            buf = new ArrayBuffer(s.length);
+            var view = new Uint8Array(buf);
+            for (i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
+        } else {
+            buf = new Array(s.length);
+            for (i = 0; i !== s.length; ++i) buf[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
+        }
+    }
+
+</script>
+</body>
+</html>

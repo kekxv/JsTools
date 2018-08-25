@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- add the shim first -->
+    <script src="../Javascript/shim.min.js"></script>
+    <!-- after the shim is referenced, add the library -->
+    <script src="../Javascript/xlsx.full.min.js"></script>
+</head>
+<body>
+
+</body>
+
+<script>
+
+
+    /* original data */
+    var filename = "write.xlsx";
+    var data = [[1, 2, 3], [true, false, null, "sheetjs"], ["foo", "bar", new Date("2014-02-19T14:30Z"), "0.3"], ["baz", null, "qux"]]
+    var ws_name = "SheetJS";
+
+    if (typeof console !== 'undefined') console.log(new Date());
+    var wb = XLSX.utils.book_new(), ws = XLSX.utils.aoa_to_sheet(data);
+
+    /* add worksheet to workbook */
+    XLSX.utils.book_append_sheet(wb, ws, ws_name);
+
+    /* write workbook */
+    if (typeof console !== 'undefined') console.log(new Date());
+    // XLSX.writeFile(wb, filename);
+    if (typeof console !== 'undefined') console.log(new Date());
+
+</script>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--[if IE]>
+    <script src="../../SomeoneModel/excanvas/html5.js" type="text/javascript"></script><![endif]-->
+    <!--[if IE]>
+    <script src="../../SomeoneModel/excanvas/excanvas.js" type="text/javascript"></script><![endif]-->
+    <!--<script src="../../SomeoneModel/jquery/jquery-1.12.4.js" type="text/javascript"></script>-->
+    <script src="ImageTools.js"></script>
+</head>
+<body>
+
+<div id="canvasDiv" style="-moz-user-select: none; /*火狐*/
+-webkit-user-select: none; /*webkit浏览器*/
+-ms-user-select: none; /*IE10*/
+-khtml-user-select: none; /*早期浏览器*/
+user-select: none; "></div>
+
+</body>
+<script>
+
+    /*
+    var canvas=document.getElementById('canvas');
+        canvas.width=800;
+        canvas.height=800;
+        var context=canvas.getContext('2d');
+        context.font="bold 20px Arial"
+        context.fillStyle="#058"
+        context.fillText("Hello canvas！",40,100)
+    * */
+    // ImageTools.init();
+    var h = [];
+    for (var i = 0; i < 4; i++) {
+        var t = new ImageTools(document.getElementById('canvasDiv'), {
+            hasBorder: true
+            , canvasWidth: 200
+            , canvasHeight: 200
+        });
+        h.push(t);
+        // t.LogDom = document.getElementById('log' + i);
+    }
+
+
+</script>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JsExcel 测试软件</title>
+    <script src="JsExcel.js"></script>
+    <script src="../../SomeoneModel/js-xlsx/Javascript/shim.min.js"></script>
+    <script src="../../SomeoneModel/js-xlsx/Javascript/xlsx.core.min.js"></script>
+    <script src="../../SomeoneModel/js-xlsx/Javascript/xlsx.full.min.js"></script>
+</head>
+<body>
+
+</body>
+<script>
+    let data = {
+        Title: "标题"
+        , MiTitle: "副标题"
+        , Cols: 10
+        , Rows: 10
+        , Data: [
+            {
+                Top: 0
+                , Left: 0
+                , Cols: 3
+                , Rows: 1
+                , data: "测试"
+            },
+            {
+                Top: 0
+                , Left: 1
+                , Cols: 1
+                , Rows: 1
+                , data: "测试"
+            },
+            {
+                Top: 0
+                , Left: 3
+                , Cols: 1
+                , Rows: 1
+                , data: "测试"
+            },
+            {
+                Top: 0
+                , Left: 4
+                , Cols: 1
+                , Rows: 1
+                , data: "测试"
+            },
+            {
+                Top: 0
+                , Left: 5
+                , Cols: 1
+                , Rows: 1
+                , data: "测试"
+            },
+            {
+                Top: 0
+                , Left: 6
+                , Cols: 1
+                , Rows: 1
+                , data: "测试"
+            },
+            {
+                Top: 4
+                , Left: 3
+                , Cols: 1
+                , Rows: 1
+                , data: "测试"
+            }
+        ]
+    };
+    let _onload = window.onload || function () {
+    };
+    let jsExcel;
+    let wopts;
+
+    /**
+     * @return {string}
+     */
+    function GetLeftValue(n) {
+        let A = 'A'.charCodeAt(0);
+        let m = n % 26;
+        let N = parseInt(n / 26);
+        let s = String.fromCharCode(m + A);
+        if (N > 0) {
+            s = GetLeftValue(N - 1) + s;
+        }
+        return s;
+    }
+
+    function GetTopLeft(xls, cell) {
+        let Top = cell.Top + 3;
+        let k = GetLeftValue(cell.Left) + Top;
+        let da = {};
+        let flag = false;
+        if (typeof cell.data !== "undefined") {
+            da.v = cell.data;
+            flag = true;
+        }
+        if (typeof cell.style !== "undefined") {
+            da.s = cell.style;
+            flag = true;
+        }
+        if (typeof cell.Cols !== "undefined" || typeof cell.Rows !== "undefined") {
+            if (typeof xls["!merges"] === "undefined") {
+                xls["!merges"] = [];
+            }
+            xls["!merges"].push({
+                s: {c: cell.Left, r: Top - 1},
+                e: {c: cell.Left + (cell.Cols || 1) - 1, r: Top - 1 + (cell.Rows || 1) - 1}
+            });
+            flag = true;
+        }
+        if (flag) {
+            xls[k] = da;
+        }
+        return xls;
+    }
+
+    function s2ab(s) {
+        let buf;
+        let i;
+        if (typeof ArrayBuffer !== 'undefined') {
+            buf = new ArrayBuffer(s.length);
+            var view = new Uint8Array(buf);
+            for (i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
+        } else {
+            buf = new Array(s.length);
+            for (i = 0; i !== s.length; ++i) buf[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
+        }
+    }
+
+    function saveAs(obj, fileName) {
+        let tmpa = document.createElement("a");
+        tmpa.download = fileName || "下载";
+        tmpa.href = URL.createObjectURL(obj);
+        tmpa.click();
+        setTimeout(function () {
+            URL.revokeObjectURL(obj);
+        }, 100);
+    }
+
+    function Download(xlsx, filename) {
+        let type = filename.split(".").pop();
+        let tmpDown = new Blob([s2ab(XLSX.write(xlsx,
+            {bookType: (type === undefined ? 'xlsx' : type), bookSST: false, type: 'binary'}//这里的数据是用来定义导出的格式类型
+        ))], {
+            type: ""
+        });
+        saveAs(tmpDown, filename);
+    }
+
+    function GetX_Xlsx(jsExcel) {
+        let data = jsExcel.data;
+        let xlsx = {
+            SheetNames: [data.Title], //保存的表标题
+            Sheets: {}
+        };
+        xlsx.Sheets[data.Title] = {};
+
+        let Title = {
+            Left: 0,
+            Top: -2,
+            data: data.Title,
+            style: {
+                textAlign: "left",
+                boxSizing: "border-box",
+                height: "3em",
+                font: {sz: 16, bold: true}
+            },
+            Cols: data.Cols
+        };
+        let miTitle = {
+            Left: 0,
+            Top: -1,
+            data: data.MiTitle,
+            style: {
+                textAlign: "center",
+                padding: "1em",
+                fontSize: "2em",
+                boxSizing: "border-box",
+                fontWeight: "600",
+                height: "3em",
+                font: {sz: 20, bold: true}
+            },
+            Cols: data.Cols
+        };
+        let sheet = xlsx.Sheets[data.Title];
+        sheet["!ref"] = "{start}:{end}".format({
+            start: "A1"
+            , end: GetLeftValue(data.Cols - 1) + (data.Rows + 1)
+        });
+        GetTopLeft(sheet, Title);
+        GetTopLeft(sheet, miTitle);
+        for (let i = 0; i < data.Data.length; i++) {
+            GetTopLeft(sheet, data.Data[i]);
+        }
+        console.log(xlsx);
+        return xlsx;
+    }
+
+    window.onload = function () {
+        _onload();
+        jsExcel = new JsExcel(data);
+        jsExcel.AddTo(document.body);
+
+
+        wopts = {bookType: 'xlsx', bookSST: true, type: 'binary', cellStyles: true};
+        let _xlsx = GetX_Xlsx(jsExcel);
+        Download(_xlsx, "test.xlsx");
+    };
+</script>
+</html>

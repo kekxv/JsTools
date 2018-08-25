@@ -1,0 +1,59 @@
+.imageBox {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+}
+
+.imageBox .imageItem.box {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.imageBox .imageItem.box>img {
+    width: 100%;
+    height: 100%;
+}
+
+.imageBox.Previous,
+.imageBox.Next {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6em;
+    bottom: 0;
+    background: rgba(126, 123, 123, 0.37);
+    z-index: 20;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,<svg fill=\"%23FFF\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M15 4 L5 12 L15 20 L15 18 L7 12 L15 6 Z\"/></svg>");
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.imageBox.Next {
+    left: auto;
+    left: unset;
+    right: 0;
+    transform: rotate(180deg);
+}
+
+.imageBox:hover .imageBox.Previous,
+.imageBox:hover .imageBox.Next {
+    display: block;
+}
+
+.imageBox.textType0 {
+    transition: all 0.3s;
+    color: white;
+    font-size: 2em;
+    font-weight: bold;
+    z-index: 30;
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    width: auto;
+}
