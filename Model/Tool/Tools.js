@@ -1,4 +1,7 @@
 (function Tools() {
+    /**
+     * @return {string}
+     */
     let StringToString = function (args) {
         if (arguments.length > 0) {
             let result = this;
