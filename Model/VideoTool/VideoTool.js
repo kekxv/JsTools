@@ -1,16 +1,4 @@
-/*
-var video = new videoTool(document.querySelector('video'), function (videoDevices, that) {
-    var select = document.querySelector('select#videoDevices');
-    for (var i = 0; i < videoDevices.length; i++) {
-        var option = document.createElement('option');
-        option.value = i;
-        option.text = videoDevices[i].label || 'camera ' + i;
-        select.appendChild(option);
-    }
-});
-*/
-
-let videoTool = function (video, callback, minWidth, minHeight) {
+const videoTool = function (video, callback, minWidth, minHeight) {
     this.minHeight = minHeight || 1280;
     this.minWidth = minWidth || 960;
     let _MirrorImage = false;
@@ -68,15 +56,35 @@ let videoTool = function (video, callback, minWidth, minHeight) {
             return video;
         }
     });
+    let index = -1;
     Object.defineProperty(this, "videoIndex", {
         set: function (value) {
-            let index = parseInt(value);
+            index = parseInt(value);
             if (!isNaN(index)) {
                 video.style.transform = _MirrorImage ? "rotateY(180deg)" : "";
                 getStream(index).then(function (video) {
-                    video.play();
-                    console.log("开始预览...", 300);
+                    //video.play();
+                    //JsAlert.ToastBox("开始预览...", 300);
                 });
+            }
+        }
+    });
+    Object.defineProperty(this, "IsPlay", {
+        get: function () {
+            return !video.paused;
+        },
+        set: function (value) {
+            if (!isNaN(index)) {
+                if (value) {
+                    video.style.transform = _MirrorImage ? "rotateY(180deg)" : "";
+                    getStream(index).then(function (video) {
+                        video.play();
+                        //JsAlert.ToastBox("开始预览...", 300);
+                    });
+                } else {
+                    video.pause();
+                    //JsAlert.ToastBox("停止预览...", 300);
+                }
             }
         }
     });
@@ -94,12 +102,12 @@ let videoTool = function (video, callback, minWidth, minHeight) {
 
             let ctx = canvas.getContext('2d');
 
-            if(_MirrorImage) {
+            if (_MirrorImage) {
                 ctx.translate(video.videoWidth, 0);
                 ctx.scale(-1, 1);
             }
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            if(_MirrorImage) {
+            if (_MirrorImage) {
                 ctx.translate(video.videoWidth, 0);
                 ctx.scale(-1, 1);
             }
@@ -118,4 +126,12 @@ let videoTool = function (video, callback, minWidth, minHeight) {
             }
         }
     });
+};
+videoTool.prototype.Stop = function () {
+    this.IsPlay = false;
+    this.video.src = "";
+};
+
+videoTool.prototype.Play = function () {
+    this.IsPlay = true;
 };
