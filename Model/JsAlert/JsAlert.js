@@ -328,6 +328,10 @@ JsAlert.LoginBox = function (onOk) {
         },
         "onOk": function (jsAlert, status, mainDom) {
             onOk.call(this, jsAlert, user.value, password.value);
+        },
+        "onClosed":function (jsAlert, status) {
+            user.value = "";
+            password.value = "";
         }
     });
 };
