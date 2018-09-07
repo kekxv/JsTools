@@ -6,7 +6,7 @@
  */
 let ImageTools = function (canvasDiv, opteion) {
     if (canvasDiv === undefined) {
-        throw new Error("没有父节点");
+        throw new Error("没有节点");
         // return null;
     }
     opteion = opteion || {};
@@ -15,14 +15,21 @@ let ImageTools = function (canvasDiv, opteion) {
 
     let logDom = null;
     let that = this;
-    let canvas = document.createElement('canvas');
-    canvas.setAttribute('width', canvasWidth);
-    canvas.setAttribute('height', canvasHeight);
-    canvas.setAttribute('id', 'canvas');
-    if (!!opteion.hasBorder) {
-        canvas.style.border = "1px solid #c3c3c3";
+    let canvas = null;
+    if(canvasDiv.nodeName.toLowerCase() === "canves"){
+      canvas = canvasDiv;
+      canvasWidth = canvas.offsetWidth;
+      canvasHeight = canvas.offsetHeight;
+    }else{
+      document.createElement('canvas');
+      canvas.setAttribute('width', canvasWidth);
+      canvas.setAttribute('height', canvasHeight);
+      canvas.setAttribute('id', 'canvas');
+      if (!!opteion.hasBorder) {
+          canvas.style.border = "1px solid #c3c3c3";
+      }
+      canvasDiv.appendChild(canvas);
     }
-    canvasDiv.appendChild(canvas);
     if (typeof G_vmlCanvasManager !== 'undefined') {
         canvas = G_vmlCanvasManager.initElement(canvas);
     }
