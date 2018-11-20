@@ -9,7 +9,7 @@ let FaceAdjstment = function (option) {
     if (!option.el) throw new Error("错误的节点");
     let $el = (option.el instanceof HTMLElement) ? option.el : document.querySelector(option.el);
 
-    if (!option.image) throw new Error("错误的图片");
+    if (!option.image && option.image != "") throw new Error("错误的图片");
     let $image = null;
     if (option.image instanceof HTMLElement) {
         $image = option.image;
@@ -21,7 +21,7 @@ let FaceAdjstment = function (option) {
     if (!option.size || !option.size.width || !option.size.height) throw new Error("错误的大小");
     let $main = document.createElement("div");
     let $box = document.createElement("div");
-    let margin = (option.size.margin || parseInt(option.size.width / 4));
+    let margin = (option.size.margin || parseInt(option.size.width / 5));
 
     this.setStyle($box, {
         display: "inline-block",
@@ -52,8 +52,8 @@ let FaceAdjstment = function (option) {
             width: width + "px",
             height: height + "px",
             position: "absolute",
-            top: (-x) + "px",
-            left: (-y) + "px",
+            top: (-y) + "px",
+            left: (-x) + "px",
         });
     };
 
@@ -74,7 +74,11 @@ let FaceAdjstment = function (option) {
         height: 0,
         borderWidth: tipW + "px",
         borderStyle: "solid",
-        margin: "auto"
+        margin: "auto",
+        left: "auto",
+        top: "auto",
+        bottom: "auto",
+        right: "auto",
     };
     this.setStyle(leftTip, tipStyle);
     this.setStyle(leftTip, {
@@ -150,6 +154,51 @@ let FaceAdjstment = function (option) {
     if (option.big) $main.appendChild(bigTip);
     if (option.little) $main.appendChild(littleTip);
 
+    if (option.line == true) {
+        let lineDiv = document.createElement("div");
+        let hrTop = document.createElement("hr");
+        let hrLeft = document.createElement("hr");
+        let hrRight = document.createElement("hr");
+        let hrStyle = {
+            background: "#f44336",
+            border: "none"
+        };
+        this.setStyle(hrTop, hrStyle);
+        this.setStyle(hrLeft, hrStyle);
+        this.setStyle(hrRight, hrStyle);
+
+        this.setStyle(hrTop, {
+            width: (option.size.height / 3) + "px",
+            height: "2px",
+            margin: (option.size.height * 20 / 375) + "px auto auto"
+        });
+        this.setStyle(hrLeft, {
+            width: "2px",
+            height: (option.size.height / 3) + "px",
+            margin: (option.size.height * 100 / 375) + "px auto auto " + (option.size.height * 40 / 375) + "px"
+        });
+        this.setStyle(hrRight, {
+            width: "2px",
+            height: (option.size.height / 3) + "px",
+            margin: "-" + (option.size.height * 100 / 375) + "px " + (option.size.height * 40 / 375) + "px auto auto"
+        });
+        lineDiv.appendChild(hrTop);
+        lineDiv.appendChild(hrLeft);
+        lineDiv.appendChild(hrRight);
+
+        this.setStyle(lineDiv, {
+            border: "none",
+            position: "absolute",
+            left: "0",
+            right: "0",
+            top: "0",
+            bottom: "0",
+            zIndex: "9999999",
+        });
+
+        $main.appendChild(lineDiv);
+    }
+
     Object.defineProperty(this, "$Box", {
         enumerable: false,
         configurable: false,
@@ -192,7 +241,17 @@ let FaceAdjstment = function (option) {
         get: function () {
             return this.GetPhoto();
         }
-    })
+    });
+    Object.defineProperty(this, "image", {
+        enumerable: true,
+        configurable: false,
+        get: function () {
+            return $image.src;
+        },
+        set: function (value) {
+            $image.src = value;
+        }
+    });
 };
 
 FaceAdjstment.prototype = {
@@ -260,8 +319,8 @@ FaceAdjstment.prototype = {
         }
         let left = parseInt(this.$image.style.left) - (offset || 1);
         let width = parseFloat(this.$image.style.width);
-        if (left + width < this.$option.size.width) {
-            left += this.$option.size.width - (left + width);
+        if (left + width - 2 < this.$option.size.width) {
+            left += this.$option.size.width - (left + width) + 2;
         }
         this.$image.style.left = left + "px";
     },
@@ -279,7 +338,7 @@ FaceAdjstment.prototype = {
         }
         let top = parseInt(this.$image.style.top) - (offset || 1);
         let height = parseFloat(this.$image.style.height);
-        if (top + height < this.$option.size.height) top += this.$option.size.height - (top + height);
+        if (top + height - 2 < this.$option.size.height) top += this.$option.size.height - (top + height) + 2;
         this.$image.style.top = (top) + "px";
     },
     toBottom: function (offset) {
@@ -371,12 +430,14 @@ FaceAdjstment.prototype = {
         let top = parseFloat(this.$image.style.top);
         let left = parseFloat(this.$image.style.left);
 
-        let r = width / this.$image.naturalWidth;
-        let l = this.$image.naturalWidth / width;
+        let rW = width / this.$image.naturalWidth;
+        let lW = this.$image.naturalWidth / width;
+        let rH = height / this.$image.naturalHeight;
+        let lH = this.$image.naturalHeight / height;
 
         context.drawImage(this.$image
             // , -left / this.$option.size.width * width, -top / this.$option.size.height * height, this.$image.naturalWidth * this.$option.size.width / width, this.$image.naturalHeight * this.$option.size.height / height
-            , -left * l, -top * l, this.$option.size.width  * l, this.$option.size.height  * l
+            , -left * lW, -top * lH, parseInt(this.$option.size.width * lW), parseInt(this.$option.size.height * lH)
             , 0, 0, this.$option.size.width, this.$option.size.height
         );
         return canvas.toDataURL('image/jpeg');
