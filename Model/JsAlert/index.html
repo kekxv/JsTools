@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JsAlert 弹出框</title>
+    <script src="JsAlert.js"></script>
+    <link rel="stylesheet" href="JsAlert.css">
+</head>
+<body>
+<button onclick="LoginBox()">LoginBox</button>
+<button onclick="LoadingBox()">LoadingBox</button>
+<button onclick="JsAlert.ToastBox('点击次数：'+(++index));">ToastBox</button>
+<button onclick="DIY();">DIY</button>
+</body>
+<script>
+    var index = 0;
+
+    function LoginBox() {
+        JsAlert.LoginBox(function (jsAlert, user, password) {
+            this.Close();
+            JsAlert.ToastBox("用户：" + user + "; 密码：" + password);
+        }).Open()
+    }
+    function LoadingBox() {
+        var js = JsAlert.LoadingBox("正在加载").Open();
+        setTimeout(function () {
+            js.Close();
+        },3000);
+    }
+    function DIY() {
+        new JsAlert({
+            "Title": "自定义",
+            "buttonStatus": "OkCancel",
+            "buttonOkTip": "自定义",
+            "BgClose": false,
+            "NoClose": false,
+            "data": "<div>自定义</div><hr/>",
+            "style": {
+                "height": "14.5em"
+            },
+            "onOk": function (jsAlert, status, mainDom) {
+                JsAlert.ToastBox("点击确定按钮");
+            },
+            "onClosed":function (jsAlert, status) {
+                JsAlert.ToastBox("已关闭");
+            }
+        }).Open();
+    }
+</script>
+</html>

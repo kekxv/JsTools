@@ -1,69 +1,113 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <!-- add the shim first -->
-    <script src="../Javascript/shim.min.js"></script>
-    <!-- after the shim is referenced, add the library -->
-    <script src="../Javascript/xlsx.full.min.js"></script>
-    <!--<script src="../Javascript/xlsx.core.min.js"></script>-->
-</head>
-<body>
-
-</body>
-
-<script>
-    div = document.createElement("div");
-    div.innerText = "1231231";
-    var jsono = [{ //测试数据
-        "id": 1,//A
-        "B": "数据11",//B
-        "C": "数据12",//C
-        "D": "数据13",//D
-        "E": "数据14",//E
-    }, {
-        "id": 2,
-        "合并的列头1": "数据21",
-        "合并的列头2": "数据22",
-        "合并的列头3": {
-            v: '采购单',
-            t: 's',
-            s: {
-                font: {
-                    sz: 18,                //18号字体
-                    bold: true             //加粗
-                },
-                alignment: {
-                    horizontal: 'center'   //水平居中对其
-                }
-            }
-        },
-        "合并的列头4": "数据24",
-    }];//....
-    const wopts = {bookType: 'xlsx', bookSST: true, type: 'binary'};//这里的数据是用来定义导出的格式类型
-    function downloadExl(data, type) {
-        var wb = {SheetNames: ['Sheet1'], Sheets: {}, Props: {}};
-        //wb.Sheets['Sheet1'] = XLSX.utils.json_to_sheet(data);//通过json_to_sheet转成单页(Sheet)数据
-        data = XLSX.utils.json_to_sheet(data);
-        data["B1"] = {t: "s", v: "asdad"};
-        data["!merges"] = [{//合并第一行数据[B1,C1,D1,E1]
-            s: {//s为开始
-                c: 1,//开始列
-                r: 0//开始取值范围
-            },
-            e: {//e结束
-                c: 4,//结束列
-                r: 0//结束范围
-            }
-        }];
-        wb.Sheets['Sheet1'] = data;
-        XLSX.write(wb, wopts);
-        console.log(wb);
-        XLSX.writeFile(wb, "wopts.xlsx");
-
-    }
-
-    downloadExl(jsono)
-</script>
-</html>
+ 5 6 7 -1.</_>
+        <_>
+          2 5 2 7 3.</_></rects></_>
+    <_>
+      <rects>
+        <_>
+          11 2 2 16 -1.</_>
+        <_>
+          11 2 1 16 2.</_></rects></_>
+    <_>
+      <rects>
+        <_>
+          1 1 18 10 -1.</_>
+        <_>
+          7 1 6 10 3.</_></rects></_>
+    <_>
+      <rects>
+        <_>
+          10 8 10 8 -1.</_>
+        <_>
+          15 8 5 4 2.</_>
+        <_>
+          10 12 5 4 2.</_></rects></_>
+    <_>
+      <rects>
+        <_>
+          0 8 10 8 -1.</_>
+        <_>
+          0 8 5 4 2.</_>
+        <_>
+          5 12 5 4 2.</_></rects></_>
+    <_>
+      <rects>
+        <_>
+          11 2 2 16 -1.</_>
+        <_>
+          11 2 1 16 2.</_></rects></_>
+    <_>
+      <rects>
+        <_>
+          3 9 12 11 -1.</_>
+        <_>
+          9 9 6 11 2.</_></rects></_>
+    <_>
+      <rects>
+        <_>
+          6 7 10 3 -1.</_>
+        <_>
+          6 7 5 3 2.</_></rects></_>
+    <_>
+      <rects>
+        <_>
+          3 1 10 16 -1.</_>
+        <_>
+          3 1 5 8 2.</_>
+        <_>
+          8 9 5 8 2.</_></rects></_>
+    <_>
+      <rects>
+        <_>
+          8 3 8 10 -1.</_>
+        <_>
+          12 3 4 5 2.</_>
+        <_>
+          8 8 4 5 2.</_></rects></_>
+    <_>
+      <rects>
+        <_>
+          4 3 8 10 -1.</_>
+        <_>
+          4 3 4 5 2.</_>
+        <_>
+          8 8 4 5 2.</_></rects></_>
+    <_>
+      <rects>
+        <_>
+          10 11 9 6 -1.</_>
+        <_>
+          10 14 9 3 2.</_></rects></_>
+    <_>
+      <rects>
+        <_>
+          1 11 9 6 -1.</_>
+        <_>
+          1 14 9 3 2.</_></rects></_>
+    <_>
+      <rects>
+        <_>
+          6 16 14 4 -1.</_>
+        <_>
+          13 16 7 2 2.</_>
+        <_>
+          6 18 7 2 2.</_></rects></_>
+    <_>
+      <rects>
+        <_>
+          1 0 9 18 -1.</_>
+        <_>
+          1 6 9 6 3.</_></rects></_>
+    <_>
+      <rects>
+        <_>
+          8 3 12 4 -1.</_>
+        <_>
+          8 5 12 2 2.</_></rects></_>
+    <_>
+      <rects>
+        <_>
+          1 5 7 9 -1.</_>
+        <_>
+          1 8 7 3 3.</_></rects></_>
+    <_>
+      <rec

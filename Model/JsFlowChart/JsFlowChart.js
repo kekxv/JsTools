@@ -72,8 +72,9 @@ Flowcharts = function (data) {
         get: function () {
             return _data;
         },
-        set:function (value) {
+        set: function (value) {
             if (value) {
+                if (typeof data.data === "undefined") return;
                 _data = [];
                 var y = 0;
                 for (var i = 0; i < data.data.length; i++) {
@@ -538,7 +539,7 @@ Flowcharts.prototype.Clear = function () {
     for (var i = childs.length - 1; i >= 0; i--) {
         this.Svg.removeChild(childs[i]);
     }
-    if(this.Svg.parentElement!=null) {
+    if (this.Svg.parentElement != null) {
         this.Svg.parentElement.removeChild(this.Svg);
     }
 };
@@ -647,11 +648,11 @@ Flowcharts.prototype.SavePhoto = function (type, showFlag) {
 
     var data = "data:image/svg+xml," +
         encodeURIComponent(svg.outerHTML || (function ($node) {
-                var $temp;
-                $temp = document.createElement('div');
-                $temp.appendChild($node);
-                return $temp.innerHTML;
-            }(svg)));
+            var $temp;
+            $temp = document.createElement('div');
+            $temp.appendChild($node);
+            return $temp.innerHTML;
+        }(svg)));
 
 
     var img = new Image();

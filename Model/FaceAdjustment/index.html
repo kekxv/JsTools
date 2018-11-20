@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>脸部调整插件测试</title>
+    <script src="FaceAdjustment.js"></script>
+</head>
+<body>
+<div id="Face">
+
+</div>
+<img id="Test">
+</body>
+<script>
+    let faceAdjustment = new FaceAdjstment({
+        el: "#Face",
+        image: "header.jpg",
+        moveColor: "#2196f3",
+        big:false,
+        moveTip:true,
+        little:false,
+        mSize: {width: 270, height: 300},
+        size: {width: 165, height: 200}
+    });
+</script>
+</html>

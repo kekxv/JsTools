@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JsFlowChart Demo</title>
+    <script src="JsFlowChart.js"></script>
+</head>
+<body>
+<div id="flowchart"></div>
+</body>
+<script>
+    var flowcharts = new Flowcharts({
+        FirstNode: ["1"],
+        width:"800px",
+        height:"600px",
+        data: [
+            {data: "测试测试", type: "FilletRect", flag: "1", NextNode: ["2"]},
+            {data: "测试测试测试测试测试", type: "Rect", flag: "2", NextNode: ["3","4"], Tip: {data: "测试", type: "FilletRect"}},
+            {data: "测试测试测试", flag: "4", type: "FilletRect", NextNode: ["3"], Tip: {data: "测试"}},
+            {data: "测试测试测试测试", type: "Rect", flag: "3", Tip: {data: "测试测试", type: "FilletRect"}}
+        ]
+    });
+    flowcharts.AddToDom(document.querySelector("#flowchart"));
+</script>
+</html>

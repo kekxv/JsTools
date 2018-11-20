@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JsNotification Demo</title>
+    <script src="JsNotification.js"></script>
+</head>
+<body>
+
+</body>
+<script>
+    new JsNotification("测试", {
+        click: console.log,
+        data: "提示",
+        close: console.log,
+        error: console.log,
+        show: console.log
+    }).Show();
+
+</script>
+
+</html>

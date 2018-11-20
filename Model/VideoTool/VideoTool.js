@@ -18,7 +18,7 @@ const videoTool = function (video, callback, minWidth, minHeight) {
                 }
             }
         }
-        callback(videoDevices, that);
+        callback.call(that, videoDevices, that);
     }
 
     function getStream(index) {

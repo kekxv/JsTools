@@ -18,29 +18,16 @@
 -khtml-user-select: none; /*早期浏览器*/
 user-select: none; "></div>
 
+<button>灰度</button>
+
 </body>
 <script>
 
-    /*
-    var canvas=document.getElementById('canvas');
-        canvas.width=800;
-        canvas.height=800;
-        var context=canvas.getContext('2d');
-        context.font="bold 20px Arial"
-        context.fillStyle="#058"
-        context.fillText("Hello canvas！",40,100)
-    * */
-    // ImageTools.init();
-    var h = [];
-    for (var i = 0; i < 4; i++) {
-        var t = new ImageTools(document.getElementById('canvasDiv'), {
-            hasBorder: true
-            , canvasWidth: 200
-            , canvasHeight: 200
-        });
-        h.push(t);
-        // t.LogDom = document.getElementById('log' + i);
-    }
+    var imageTools = new ImageTools(document.getElementById('canvasDiv'), {
+        hasBorder: true
+        , canvasWidth: 400
+        , canvasHeight: 400
+    });
 
 
 </script>
