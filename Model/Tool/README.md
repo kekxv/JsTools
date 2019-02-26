@@ -18,6 +18,17 @@
    document.writeln("{0}:{1}|{3}".format("1","测试",19));
    ````
    
+扩展函数 `toDate` ;时间格式字符串转换为时间格式：
+
+   ````javascript
+   // 以下均输出： Tue Nov 26 2019 20:45:21 GMT+0800 (中国标准时间)
+   console.log("2019年11月26日 20:45:21".toDate());
+   // 等价于
+   console.log(new Date(Date.parse("2019年11月26日 20:45:21")));
+   ````
+   
+![toDate 执行结果](toDate.png)
+   
 ## Date 扩展
 
 扩展函数 `format` ;序列化时间：

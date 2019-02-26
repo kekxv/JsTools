@@ -32,6 +32,16 @@
             return StringToString.bind(this);
         }
     });
+    Object.defineProperty(String.prototype, "toDate", {
+        enumerable: false,
+        configurable: false,
+        get: function getter() {
+            let that = this;
+            return function (){
+                return new Date(Date.parse(that));
+            };
+        }
+    });
 
 
     let DateAdd_O = {

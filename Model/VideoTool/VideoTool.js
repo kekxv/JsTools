@@ -43,6 +43,9 @@ const videoTool = function (video, callback, minWidth, minHeight) {
             //Firefox中，video.mozSrcObject最初为null，而不是未定义的，我们可以靠这个来检测Firefox的支持
             video.mozSrcObject = stream;
         }
+        else if (video.srcObject !== undefined) {
+            video.srcObject = stream;
+        }
         else {
             video.src = window.URL && window.URL.createObjectURL(stream) || stream;
         }
