@@ -15,8 +15,14 @@
         age:19,
     }));
     document.writeln("<hr/>");
-    document.writeln(
-        new Date().format("yyyy年MM月dd日 hh:mm:ss")
-    )
+    document.writeln("{str}<br/>{date}".format({
+        str:"yyyy年MM月dd日 hh:mm:ss",
+        date:new Date().format("yyyy年MM月dd日 hh:mm:ss")
+    }));
+    document.writeln("<hr/>");
+    document.writeln("{str}<br/>{date}".format({
+        str:"yyyy+1年MM-3月dd-1日 hh:mm:ss",
+        date:new Date().format("yyyy+1年MM-3月dd-1日 hh:mm:ss")
+    }));
 </script>
 </html>
