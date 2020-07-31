@@ -67,7 +67,7 @@ let WebRTC = function (option) {
         }
     }
     peerConnection.ondatachannel = (ev) => {
-        // console.log("ondatachannel", ev);
+        // console.trace("ondatachannel", ev);
         _localChannel = ev.channel;
         _initLocalChannel();
     }
@@ -108,7 +108,7 @@ let WebRTC = function (option) {
             get() {
                 return function (ev) {
                     self.connected = true;
-                    let onopen = option.onOpen || option.onopen || console.log;
+                    let onopen = option.onOpen || option.onopen || console.trace;
                     onopen.call(self, ev);
                 }
             }
@@ -118,7 +118,7 @@ let WebRTC = function (option) {
             get() {
                 return function (ev) {
                     self.connected = false;
-                    let onclose = option.onClose || option.onclose || console.log;
+                    let onclose = option.onClose || option.onclose || console.trace;
                     onclose.call(self, ev);
                 }
             }
@@ -127,7 +127,7 @@ let WebRTC = function (option) {
             configurable: false, enumerable: false,
             get() {
                 return function (ev) {
-                    let onerror = option.onError || option.onerror || console.log;
+                    let onerror = option.onError || option.onerror || console.trace;
                     onerror.call(self, ev);
                 }
             }
@@ -136,7 +136,7 @@ let WebRTC = function (option) {
             configurable: false, enumerable: false,
             get() {
                 return function (ev) {
-                    let onmessage = option.onMessage || option.onmessage || console.log;
+                    let onmessage = option.onMessage || option.onmessage || console.trace;
                     onmessage.call(self, ev, ev.data);
                 }
             }
@@ -152,18 +152,17 @@ let WebRTC = function (option) {
                     try {
                         icecandidate = JSON.parse(icecandidate);
                     } catch (e) {
-                        console.log(e);
-                        return;
+                        throw e;
                     }
                 }
                 if (IceCandidateFlag) return;
                 try {
-                    // console.log("icecandidate",icecandidate);
-                    await peerConnection.addIceCandidate(icecandidate);
+                    // console.trace("icecandidate",icecandidate);
                     IceCandidateFlag = true;
+                    return await peerConnection.addIceCandidate(icecandidate);
                 } catch (e) {
-                    console.error(e);
-                    // throw e;
+                    IceCandidateFlag = false;
+                    throw e;
                 }
             }
         }
@@ -209,6 +208,23 @@ Object.defineProperty(WebRTC.prototype, "send", {
         }
     }
 });
+Object.defineProperty(WebRTC.prototype, "close", {
+    configurable: false,
+    /**
+     * @type {function()}
+     */
+    get() {
+        /**
+         * @type {function()}
+         */
+        return function () {
+            return new Promise(async (resolve, reject) => {
+                this._localChannel && await this._localChannel.close();
+                resolve();
+            })
+        }
+    }
+});
 Object.defineProperty(WebRTC.prototype, "handleOffer", {
     configurable: false,
     get() {
@@ -217,7 +233,7 @@ Object.defineProperty(WebRTC.prototype, "handleOffer", {
                 try {
                     offer = JSON.parse(offer);
                 } catch (e) {
-                    console.log(e);
+                    console.trace(e);
                     return;
                 }
             }
@@ -239,12 +255,12 @@ Object.defineProperty(WebRTC.prototype, "handleAnswer", {
                 try {
                     answer = JSON.parse(answer);
                 } catch (e) {
-                    console.log(e);
+                    console.trace(e);
                     return;
                 }
             }
             let peerConnection = this.peerConnection;
-            await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+            return await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
         }
     }
 });
