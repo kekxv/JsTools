@@ -39,7 +39,13 @@ let WebRTC = function (option) {
           "rtcpMuxPolicy": "require"
         }
      */
-    const peerConnectionConfigure = null;
+    const peerConnectionConfigure = option.peerConfigure || option.peerConnectionConfigure || null;
+    option.mediaConstraints = option.mediaConstraints || {
+        'mandatory': {
+            'OfferToReceiveAudio': true,
+            'OfferToReceiveVideo': true
+        }
+    };
     //创建 PeerConnection
     let peerConnection = new RTCPeerConnection(peerConnectionConfigure);
 
@@ -183,7 +189,7 @@ Object.defineProperty(WebRTC.prototype, "createOffer", {
         return function () {
             return new Promise(async (resolve, reject) => {
                 let peerConnection = this.peerConnection;
-                let offer = await peerConnection.createOffer();
+                let offer = await peerConnection.createOffer(this.$option.mediaConstraints);
                 //保存本地 sdp
                 await peerConnection.setLocalDescription(offer);
                 resolve(offer);
