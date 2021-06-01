@@ -493,11 +493,11 @@ JsExcel.prototype.cloneNode = function (flag) {
     }
     return dom;
 };
-JsExcel.prototype.print = function (width, id) {
+JsExcel.prototype.print = function (width, id,title) {
     id = id || (new Date()).valueOf();
     var newWindow = window.open("about:blank?source=" + id, "_blank");
     // var newWindow = window.open("打印窗口" + (new Date()).valueOf(), "_blank");
-    newWindow.document.title = "深圳市汇利斯通信息技术有限公司";
+    newWindow.document.title = title || "打印预览";
     newWindow.document.body.style.width = (width || 800) + "px";
     newWindow.document.body.style.width = (width || 800) + "px";
     newWindow.document.body.appendChild(this.ToBase64Image(this.cloneNode(true)));
